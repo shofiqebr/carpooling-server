@@ -39,11 +39,11 @@ async function run() {
     })
 
 
-     app.get('/services',async(req,res)=>{
-      const cursor = serviceCollection.find();
-      const result = await cursor.toArray();
-      res.send(result); 
-    });
+    //  app.get('/services',async(req,res)=>{
+    //   const cursor = serviceCollection.find();
+    //   const result = await cursor.toArray();
+    //   res.send(result); 
+    // });
 
     app.get('/services/:id', async (req, res) => {
       const id = req.params.id;
@@ -58,6 +58,27 @@ async function run() {
     const result = await serviceCollection.insertOne(service);
     res.send(result);
 })
+
+
+app.put('/service/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) }
+  const options = { upsert: true };
+  const updatedService = req.body;
+
+  const service = {
+      $set: {
+          serviceName: updatedService.serviceName,
+          serviceImage: updatedService.serviceImage,
+          serviceDescription: updatedService.serviceDescription,
+          serviceArea: updatedService.serviceArea,
+      }
+  }
+
+  const result = await serviceCollection.updateOne(filter, service, options);
+  res.send(result);
+})
+
 
   app.delete('/services/:id', async (req, res) => {
             const id = req.params.id;
