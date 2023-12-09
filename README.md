@@ -1,4 +1,3 @@
-# carpooling-server
 Features
 - A user can share thier ride
 - can see specific data
